@@ -1,0 +1,30 @@
+### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
+
+# This file contains generic system-wide things to monitor. This includes things 
+# like CPU load, memory etc. Non-generic stuff should go to respective service 
+# modules. For example, Apache module should contain monit scripts to monitor 
+# Apache.
+
+# From http://mmonit.com/monit/documentation/monit.html
+#
+# CHECK SYSTEM <unique name>
+#
+# The system name is usualy hostname, but any descriptive name can be used. This 
+# test allows to check general system resources such as CPU usage (percent of 
+# time spent in user, system and wait), total memory usage or load average.
+
+check system <%= hostname %>
+    if loadavg (1min) > <%= loadavg_1min %> then alert
+    if loadavg (5min) > <%= loadavg_5min %> then alert
+    if memory usage > <%= memory_usage %> then alert
+    if cpu usage (system) > <%= cpu_usage_system %> then alert
+    if cpu usage (user) > <%= cpu_usage_user %> then alert
+
+# CHECK FILESYSTEM <unique name> PATH <path>
+#
+# <path> is the path to the filesystem block special device, mount point, file or 
+# a directory which is part of a filesystem.
+
+check device rootfs with path /
+    alert <%= servermonitor %> with reminder on 480 cycles
+    if space usage > <%= space_usage %> then alert

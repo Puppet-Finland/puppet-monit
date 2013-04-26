@@ -1,0 +1,37 @@
+### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
+
+# How often to poll. Debian overrides this in /etc/default/monit
+set daemon  180
+set logfile syslog facility log_daemon                       
+set mailserver localhost
+
+# We need monit's httpd for monitoring status of services, enabling them after 
+# unmonitoring, etc. A browser or the "monit" application can be used for the 
+# job.
+set httpd port 2812 and use the address localhost
+    allow localhost
+
+# Mail queue; useful if for the (local) mail server is unresponsive for extended
+# periods of time
+set eventqueue
+     basedir /var/monit  # set the base directory where events will be stored
+     slots 100           # optionaly limit the queue size
+
+# This is unnecessary piece of code if $fqdn is defined in the node definition
+# (when it'd otherwise be missing) but very useful as an example:
+# 
+<% if has_variable?("fqdn") then %>
+set mail-format { from: monit@<%= fqdn %> }
+<% else %>
+set mail-format { from: monit@<%= hostname %> }
+<% end %>
+
+# We don't want to receive monit instance change events, which are sent if monit
+# restarts.
+set alert <%= servermonitor %> but not on { instance } with reminder on 480 cycles
+
+# Include monit rule fragments installed by services. We need this rather ugly 
+# (Puppet) syntax if we isolate the variables into a separate subclass (e.g. 
+# monit::params) and just include that subclass in the class that loads the 
+# template.
+include <%= scope.lookupvar('monit::params::fragment_dir') %>/*.monit
