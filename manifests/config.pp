@@ -41,6 +41,7 @@ class monit::config(
         owner  => root,
         group  => root,
         mode   => 755,
+        require => Class['monit::install'],
     }
 
     file { 'monit-core.monit':
@@ -50,6 +51,7 @@ class monit::config(
         owner   => root,
         group   => root,
         mode    => 600,
+        require => File['monit-conf.d'],
         notify  => Class['monit::service'],
     }
 
