@@ -8,7 +8,7 @@ class monit::config::debian {
     file { 'monit-monit-debian':
         name    => '/etc/default/monit',
         ensure  => present,
-        source  => 'puppet:///monit/monit-debian',
+        content => template('monit/monit-debian.erb'),
         owner   => root,
         group   => root,
         mode    => 644,

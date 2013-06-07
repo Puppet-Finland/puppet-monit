@@ -6,13 +6,13 @@
 #
 class monit::config::opensuse {
     file { 'monit-monit-opensuse':
-        name => '/etc/sysconfig/monit',
-        ensure => present,
-        source => 'puppet:///monit/monit-opensuse',
-        owner => root,
-        group => root,
-        mode => 644,
+        name    => '/etc/sysconfig/monit',
+        ensure  => present,
+        content => template('monit/monit-opensuse.erb'),
+        owner   => root,
+        group   => root,
+        mode    => 644,
         require => Class['monit::install'],
-        notify => Class['monit::service'],
+        notify  => Class['monit::service'],
     }
 }
