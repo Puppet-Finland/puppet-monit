@@ -5,18 +5,37 @@
 #
 class monit::params {
 
-    $monitrc_name = $::osfamily ? {
-        'RedHat' => '/etc/monit.conf',
-        'Suse'   => '/etc/monitrc',
-        'Debian' => '/etc/monit/monitrc',
-        default  => '/etc/monit/monitrc',
-    }
-
-    $fragment_dir = $::osfamily ? {
-        'RedHat' => '/etc/monit.d',
-        'Suse'   => '/etc/monit.d',
-        'Debian' => '/etc/monit/conf.d',
-        default  => '/etc/monit/conf.d',
+    case $::osfamily {
+        'RedHat': {
+            $package_name = 'monit'
+            $monitrc_name = '/etc/monit.conf'
+            $fragment_dir = '/etc/monit.d'
+            $admingroup = 'root'
+        }
+        'Suse': {
+            $package_name = 'monit'
+            $monitrc_name = '/etc/monitrc'
+            $fragment_dir = '/etc/monit.d'
+            $admingroup = 'root'
+        }
+        'Debian': {
+            $package_name = 'monit'
+            $monitrc_name = '/etc/monit/monitrc'
+            $fragment_dir = '/etc/monit/conf.d'
+            $admingroup = 'root'
+        }
+        'FreeBSD': {
+            $package_name = 'sysutils/monit'
+            $monitrc_name = '/usr/local/etc/monitrc'
+            $fragment_dir = '/usr/local/etc/monit.d'
+            $admingroup = 'wheel'
+        }
+        default: {
+            $package_name = 'monit'
+            $monitrc_name = '/etc/monit/monitrc'
+            $fragment_dir = '/etc/monit/conf.d'
+            $admingroup = 'root'
+        }
     }
 
     # The service script may or may not have a proper status target

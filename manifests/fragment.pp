@@ -21,7 +21,7 @@ define monit::fragment(
         name    => "${monit::params::fragment_dir}/${basename}.monit",
         content => template("${modulename}/${basename}.monit.erb"),
         owner   => root,
-        group   => root,
+        group   => "${::monit::params::admingroup}",
         mode    => 600,
         require => Class['monit::config'],
         notify  => Class['monit::service'],
