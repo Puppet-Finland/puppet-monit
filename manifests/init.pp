@@ -51,7 +51,7 @@ class monit(
 {
 
 # Rationale for this is explained in init.pp of the sshd module
-if hiera('manage_monit') != 'false' {
+if hiera('manage_monit', 'true') != 'false' {
 
     include monit::install
 
