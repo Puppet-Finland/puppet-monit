@@ -49,6 +49,10 @@ class monit(
     $email = $::servermonitor
 )
 {
+
+# Rationale for this is explained in init.pp of the sshd module
+if hiera('manage_monit') != 'false' {
+
     include monit::install
 
     class { 'monit::config':
@@ -62,4 +66,5 @@ class monit(
     }
 
     include monit::service
+}
 }
