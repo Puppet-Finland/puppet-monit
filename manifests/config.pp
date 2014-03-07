@@ -3,17 +3,50 @@
 #
 # Configures monit daemon
 #
-class monit::config(
+class monit::config
+(
+    $bind_address,
+    $bind_port,
+    $username,
+    $password,
+    $all_addresses_ipv4,
     $loadavg_1min,
     $loadavg_5min,
     $memory_usage,
     $cpu_usage_system,
     $cpu_usage_user,
     $space_usage,
-    $email
+    $email,
+    $mmonit_user,
+    $mmonit_password,
+    $mmonit_host,
+    $mmonit_port
 )
 {
     include monit::params
+
+    # Generate the URL for M/Monit, if $mmonit_user is defined
+    if $mmonit_user == '' {
+        $mmonit_line = ''
+    } else {
+        $mmonit_line = "set mmonit http://${mmonit_user}:${mmonit_password}@${mmonit_host}:${mmonit_port}/collector"
+    }
+
+    # Generate the "set httpd" line
+    if $bind_address == 'all' {
+        $httpd_line = "set httpd port ${bind_port}"
+    } elsif $bind_address == 'query' {
+        $ipv4_address = generate('/usr/local/bin/getip.sh', '-4', "$fqdn")        
+        $httpd_line = "set httpd port ${bind_port} and use the address ${ipv4_address}"
+    } else {
+        $httpd_line = "set httpd port ${bind_port} and use the address ${bind_address}"
+    }
+
+    if $username == '' {
+        $httpd_credentials_line = ''
+    } else {
+        $httpd_credentials_line = "allow ${username}:${password}"
+    }
 
     file { 'monit-control-dir':
         name    => '/var/monit',

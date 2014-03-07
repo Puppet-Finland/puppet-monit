@@ -4,12 +4,16 @@
 set daemon  180
 set logfile syslog facility log_daemon                       
 set mailserver localhost
+<%= mmonit_line %>
 
 # We need monit's httpd for monitoring status of services, enabling them after 
 # unmonitoring, etc. A browser or the "monit" application can be used for the 
 # job.
-set httpd port 2812 and use the address localhost
-    allow localhost
+<%= httpd_line %>
+  <%= httpd_credentials_line %>
+<% all_addresses_ipv4.each do |address| -%>
+  allow <%= address %>
+<% end -%>
 
 # Mail queue; useful if for the (local) mail server is unresponsive for extended
 # periods of time

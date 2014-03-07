@@ -5,8 +5,31 @@
 # monit. It includes defines that allow other modules to add monit rule 
 # fragments.
 #
+# Note that this module depends on "puppetlabs/stdlib" module and if 
+# $bind_address is set to 'query', on the 'getip.sh' script working properly on 
+# the Puppet master.
+#
 # == Parameters
 #
+# [*bind_address*]
+#   The IP-address/hostname monit's web server will bind to. Use special value 
+#   'all' to bind to all available interfaces. If this is set to 'query', bind 
+#   to the IP that's returned by querying the DNS on Puppetmaster using this 
+#   node's $::fqdn. This can be useful if $:fqdn resolves to a private IP and 
+#   you want to allow access to monit webserver from the intranet, but not from 
+#   the Internet. Default value for this parameter is 'localhost'.
+# [*bind_port*]
+#   The port monit's web server will bind to. Defaults to 2812.
+# [*username*]
+#   Username for accessing the webserver. Can be omitted (default).
+# [*password*]
+#   Password for accessing the webserver. Can be omitted (default).
+# [*allow_addresses_ipv4*]
+#   An array containing IP-addresses and subnets that are allowed to access 
+#   monit's built-in webserver. The address limitations are enforced in 
+#   webserver configuration and packet filtering rules (if in use). The default 
+#   value is ['127.0.0.1']. Note that $mmonit_host (if defined) is automatically 
+#   added to this array.
 # [*loadavg_1min*]
 #   Notify if one minute load average rises below this threshold. Defaults to 20.
 # [*loadavg_5min*]
@@ -23,6 +46,15 @@
 # [*email*]
 #   Email where monit notifications/alerts are sent. Defaults to variable 
 #   $::servermonitor defined in the node definition/site.pp.
+# [*mmonit_user*]
+#   Username for the M/Monit daemon. Omit if you don't use M/Monit.
+# [*mmonit_password*]
+#   Password for the M/Monit daemon. Omit if you don't use M/Monit.
+# [*mmonit_host*]
+#   Hostname or IP-address of the M/Monit daemon. Omit if you don't use M/Monit.
+# [*mmonit_port*]
+#   Port on which the M/Monit service listens. Defaults to 8080. Omit if you 
+#   don't use M/Monit.
 #
 # == Examples
 #
@@ -33,20 +65,31 @@
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
+# Samuli Seppänen <samuli@openvpn.net>
 #
 # == License
 #
 # BSD-license
-# See COPYING.txt
+# See file LICENSE for details.
 #
-class monit(
+class monit
+(
+    $bind_address = 'localhost',
+    $bind_port = 2812,
+    $username = '',
+    $password = '',
+    $allow_addresses_ipv4 = ['127.0.0.1'],
     $loadavg_1min = '20',
     $loadavg_5min = '10',
     $memory_usage = '95%',
     $cpu_usage_system = '95%',
     $cpu_usage_user = '95%',
     $space_usage = '90%',
-    $email = $::servermonitor
+    $email = $::servermonitor,
+    $mmonit_user = '',
+    $mmonit_password = '',
+    $mmonit_host = '',
+    $mmonit_port = 8080
 )
 {
 
@@ -55,7 +98,20 @@ if hiera('manage_monit', 'true') != 'false' {
 
     include monit::install
 
+    # Add $mmonit_host to list of allowed IPs (for monit's webserver), if 
+    # defined.
+    if $mmonit_host == '' {
+        $all_addresses_ipv4 = $allow_addresses_ipv4
+    } else {
+        $all_addresses_ipv4 = concat($allow_addresses_ipv4, ["$mmonit_host"])
+    }
+
     class { 'monit::config':
+        bind_address        => $bind_address,
+        bind_port           => $bind_port,
+        username            => $username,
+        password            => $password,
+        all_addresses_ipv4  => $all_addresses_ipv4,
         loadavg_1min        => $loadavg_1min,
         loadavg_5min        => $loadavg_5min,
         memory_usage        => $memory_usage,
@@ -63,8 +119,20 @@ if hiera('manage_monit', 'true') != 'false' {
         cpu_usage_user      => $cpu_usage_user,
         space_usage         => $space_usage,
         email               => $email,
+        mmonit_user         => $mmonit_user,
+        mmonit_password     => $mmonit_password,
+        mmonit_host         => $mmonit_host,
+        mmonit_port         => $mmonit_port,
     }
 
     include monit::service
+
+    if tagged('packetfilter') {
+        class { 'monit::packetfilter':
+            all_addresses_ipv4 => $all_addresses_ipv4,
+            bind_port => $bind_port,
+        }
+    }
+
 }
 }
