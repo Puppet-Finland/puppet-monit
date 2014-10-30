@@ -35,14 +35,14 @@
 # [*loadavg_5min*]
 #   Notify if five minute load average rises below this threshold. Defaults to 10.
 # [*memory_usage*]
-#   Notify if memory usage exceeds this percentage. Defaults to 95.
+#   Notify if memory usage exceeds this percentage. Defaults to '95%'.
 # [*cpu_usage_system*]
-#   Notify if kernel-space CPU usage exceeds this percentage. Defaults to 95.
+#   Notify if kernel-space CPU usage exceeds this percentage. Defaults to '95%'.
 # [*cpu_usage_user*]
-#   Notify if user-space CPU usage exceeds this percentage. Defaults to 95.
+#   Notify if user-space CPU usage exceeds this percentage. Defaults to '95%'.
 # [*space_usage*]
 #   Notify if disk space usage (on root filesystem) exceeds this percentage. 
-#   Defaults to 90.
+#   Defaults to '90%'.
 # [*email*]
 #   Email where monit notifications/alerts are sent. Defaults to variable 
 #   $::servermonitor defined in the node definition/site.pp.
