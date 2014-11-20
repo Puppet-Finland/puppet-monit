@@ -64,19 +64,19 @@
 #
 # == Examples
 #
-# class { 'monit':
-#   email => 'john.doe@domain.com',
-# }
+#   class { 'monit':
+#       email => 'john.doe@domain.com',
+#   }
 #
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
+#
 # Samuli Seppänen <samuli@openvpn.net>
 #
 # == License
 #
-# BSD-license
-# See file LICENSE for details.
+# BSD-license. See file LICENSE for details.
 #
 class monit
 (
