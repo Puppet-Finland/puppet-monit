@@ -92,7 +92,7 @@ class monit
     $mmonit_password = '',
     $mmonit_host = '',
     $mmonit_port = 8080,
-    $filesystems
+    $filesystems = {}
 )
 {
 
