@@ -55,6 +55,8 @@
 # [*mmonit_port*]
 #   Port on which the M/Monit service listens. Defaults to 8080. Omit if you 
 #   don't use M/Monit.
+# [*filesystems*]
+#   A hash of monit::filesystem defined resources to realize.
 #
 # == Examples
 #
@@ -89,7 +91,8 @@ class monit
     $mmonit_user = '',
     $mmonit_password = '',
     $mmonit_host = '',
-    $mmonit_port = 8080
+    $mmonit_port = 8080,
+    $filesystems
 )
 {
 
@@ -124,6 +127,9 @@ if hiera('manage_monit', 'true') != 'false' {
         mmonit_host         => $mmonit_host,
         mmonit_port         => $mmonit_port,
     }
+
+    # Additional filesystem monitoring
+    create_resources('monit::filesystem', $filesystems)
 
     include monit::service
 
