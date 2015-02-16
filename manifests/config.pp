@@ -5,6 +5,7 @@
 #
 class monit::config
 (
+    $ensure,
     $bind_address,
     $bind_port,
     $username,
@@ -48,9 +49,19 @@ class monit::config
         $httpd_credentials_line = "allow ${username}:${password}"
     }
 
+    $ensure_file = $ensure ? {
+        /(present|running)/ => present,
+        'absent' => absent,
+    }
+
+    $ensure_dir = $ensure ? {
+        /(present|running)/ => directory,
+        'absent' => absent,
+    }
+
     file { 'monit-control-dir':
         name    => '/var/monit',
-        ensure  => directory,
+        ensure  => $ensure_dir,
         owner   => root,
         group   => "${::monit::params::admingroup}",
         mode    => 755,
@@ -58,7 +69,7 @@ class monit::config
     }
 
     file { 'monit-monitrc':
-        ensure  => present,
+        ensure  => $ensure_file,
         name    => $monit::params::monitrc_name,
         content => template('monit/monitrc.erb'),
         owner   => root,
@@ -70,7 +81,7 @@ class monit::config
 
     file {  'monit-conf.d':
         name   => $monit::params::fragment_dir,
-        ensure => directory,
+        ensure => $ensure_dir,
         owner  => root,
         group  => "${::monit::params::admingroup}",
         mode   => 755,
@@ -78,7 +89,7 @@ class monit::config
     }
 
     file { 'monit-core.monit':
-        ensure  => present,
+        ensure  => $ensure_file,
         name    => "${monit::params::fragment_dir}/core.monit",
         content => template('monit/core.monit.erb'),
         owner   => root,
@@ -90,7 +101,15 @@ class monit::config
 
     # Some operating systems require additional configuration files
     case $::osfamily {
-        'Debian': { include monit::config::debian }
-        'Suse':   { include monit::config::opensuse }
+        'Debian': {
+            class { 'monit::config::debian':
+                ensure => $ensure,
+            }
+        }
+        'Suse':   {
+            class { 'monit::config::opensuse':
+                ensure => $ensure,
+            }
+        }
     }
 }

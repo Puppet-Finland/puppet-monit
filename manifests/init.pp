@@ -11,6 +11,10 @@
 #
 # == Parameters
 #
+# [*ensure*]
+#   Status of monit and it's configurations. Valid values are 'present' 
+#   (default), 'absent' and 'running'. The value 'running' does the same as 
+#   'present', but additionally ensures that the monit service is running.
 # [*bind_address*]
 #   The IP-address/hostname monit's web server will bind to. Use special value 
 #   'all' to bind to all available interfaces. If this is set to 'query', bind 
@@ -76,6 +80,7 @@
 #
 class monit
 (
+    $ensure = 'present',
     $bind_address = 'localhost',
     $bind_port = 2812,
     $username = '',
@@ -99,7 +104,9 @@ class monit
 # Rationale for this is explained in init.pp of the sshd module
 if hiera('manage_monit', 'true') != 'false' {
 
-    include monit::install
+    class { 'monit::install':
+        ensure => $ensure,
+    }
 
     # Add $mmonit_host to list of allowed IPs (for monit's webserver), if 
     # defined.
@@ -110,6 +117,7 @@ if hiera('manage_monit', 'true') != 'false' {
     }
 
     class { 'monit::config':
+        ensure              => $ensure,
         bind_address        => $bind_address,
         bind_port           => $bind_port,
         username            => $username,
@@ -131,10 +139,13 @@ if hiera('manage_monit', 'true') != 'false' {
     # Additional filesystem monitoring
     create_resources('monit::filesystem', $filesystems)
 
-    include monit::service
+    class { 'monit::service':
+        ensure => $ensure,
+    }
 
     if tagged('packetfilter') {
         class { 'monit::packetfilter':
+            ensure => $ensure,
             all_addresses_ipv4 => $all_addresses_ipv4,
             bind_port => $bind_port,
         }
