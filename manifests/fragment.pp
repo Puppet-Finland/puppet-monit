@@ -5,7 +5,7 @@
 #
 # == Parameters
 #
-# [*status*]
+# [*ensure*]
 #   Status of the fragment. Valid values 'present' (default) and 'absent'.
 # [*modulename*]
 #   Name of the module containing the monit template
@@ -14,20 +14,20 @@
 #
 define monit::fragment
 (
-    $status='present',
     $modulename,
+    $ensure='present',
     $basename=$modulename
 )
 {
-    include monit::params
+    include ::monit::params
 
     file { "${modulename}-${basename}.monit":
-        ensure  => $status,
-        name    => "${monit::params::fragment_dir}/${basename}.monit",
+        ensure  => $ensure,
+        name    => "${::monit::params::fragment_dir}/${basename}.monit",
         content => template("${modulename}/${basename}.monit.erb"),
-        owner   => root,
-        group   => "${::monit::params::admingroup}",
-        mode    => 600,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0600',
         require => Class['monit::config'],
         notify  => Class['monit::service'],
     }

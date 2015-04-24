@@ -11,6 +11,9 @@
 #
 # == Parameters
 #
+# [*manage*]
+#   Whether to manage monit with Puppet or not. Valid values are 'yes' (default) 
+#   and 'no'.
 # [*ensure*]
 #   Status of monit and it's configurations. Valid values are 'present' 
 #   (default), 'absent' and 'running'. The value 'running' does the same as 
@@ -80,11 +83,12 @@
 #
 class monit
 (
+    $manage = 'yes',
     $ensure = 'present',
     $bind_address = 'localhost',
     $bind_port = 2812,
-    $username = '',
-    $password = '',
+    $username = undef,
+    $password = undef,
     $allow_addresses_ipv4 = ['127.0.0.1'],
     $loadavg_1min = '20',
     $loadavg_5min = '10',
@@ -93,61 +97,60 @@ class monit
     $cpu_usage_user = '95%',
     $space_usage = '90%',
     $email = $::servermonitor,
-    $mmonit_user = '',
-    $mmonit_password = '',
-    $mmonit_host = '',
+    $mmonit_user = undef,
+    $mmonit_password = undef,
+    $mmonit_host = undef,
     $mmonit_port = 8080,
     $filesystems = {}
 )
 {
 
-# Rationale for this is explained in init.pp of the sshd module
-if hiera('manage_monit', 'true') != 'false' {
+if $manage == 'yes' {
 
-    class { 'monit::install':
+    class { '::monit::install':
         ensure => $ensure,
     }
 
     # Add $mmonit_host to list of allowed IPs (for monit's webserver), if 
     # defined.
-    if $mmonit_host == '' {
-        $all_addresses_ipv4 = $allow_addresses_ipv4
+    if $mmonit_host {
+        $all_addresses_ipv4 = concat($allow_addresses_ipv4, [$mmonit_host])
     } else {
-        $all_addresses_ipv4 = concat($allow_addresses_ipv4, ["$mmonit_host"])
+        $all_addresses_ipv4 = $allow_addresses_ipv4
     }
 
-    class { 'monit::config':
-        ensure              => $ensure,
-        bind_address        => $bind_address,
-        bind_port           => $bind_port,
-        username            => $username,
-        password            => $password,
-        all_addresses_ipv4  => $all_addresses_ipv4,
-        loadavg_1min        => $loadavg_1min,
-        loadavg_5min        => $loadavg_5min,
-        memory_usage        => $memory_usage,
-        cpu_usage_system    => $cpu_usage_system,
-        cpu_usage_user      => $cpu_usage_user,
-        space_usage         => $space_usage,
-        email               => $email,
-        mmonit_user         => $mmonit_user,
-        mmonit_password     => $mmonit_password,
-        mmonit_host         => $mmonit_host,
-        mmonit_port         => $mmonit_port,
+    class { '::monit::config':
+        ensure             => $ensure,
+        bind_address       => $bind_address,
+        bind_port          => $bind_port,
+        username           => $username,
+        password           => $password,
+        all_addresses_ipv4 => $all_addresses_ipv4,
+        loadavg_1min       => $loadavg_1min,
+        loadavg_5min       => $loadavg_5min,
+        memory_usage       => $memory_usage,
+        cpu_usage_system   => $cpu_usage_system,
+        cpu_usage_user     => $cpu_usage_user,
+        space_usage        => $space_usage,
+        email              => $email,
+        mmonit_user        => $mmonit_user,
+        mmonit_password    => $mmonit_password,
+        mmonit_host        => $mmonit_host,
+        mmonit_port        => $mmonit_port,
     }
 
     # Additional filesystem monitoring
     create_resources('monit::filesystem', $filesystems)
 
-    class { 'monit::service':
+    class { '::monit::service':
         ensure => $ensure,
     }
 
     if tagged('packetfilter') {
-        class { 'monit::packetfilter':
-            ensure => $ensure,
+        class { '::monit::packetfilter':
+            ensure             => $ensure,
             all_addresses_ipv4 => $all_addresses_ipv4,
-            bind_port => $bind_port,
+            bind_port          => $bind_port,
         }
     }
 

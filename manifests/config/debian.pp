@@ -16,12 +16,12 @@ class monit::config::debian
     }
 
     file { 'monit-monit-debian':
-        name    => '/etc/default/monit',
         ensure  => $ensure_file,
+        name    => '/etc/default/monit',
         content => template('monit/monit-debian.erb'),
-        owner   => root,
-        group   => root,
-        mode    => 644,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0644',
         require => Class['monit::install'],
         notify  => Class['monit::service'],
     }

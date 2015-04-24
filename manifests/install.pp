@@ -6,7 +6,8 @@
 class monit::install
 (
     $ensure
-)
+
+) inherits monit::params
 {
 
     $ensure_package = $ensure ? {
@@ -15,8 +16,8 @@ class monit::install
     }
 
     package { 'monit':
-        name    => 'monit',
         ensure  => $ensure_package,
+        name    => 'monit',
         require => Class['postfix'],
     }
 }

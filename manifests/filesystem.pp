@@ -25,15 +25,15 @@ define monit::filesystem
     $email = $::servermonitor
 )
 {
-    include monit::params
+    include ::monit::params
 
     file { "monit-${fs_name}-filesystem.monit":
         ensure  => present,
         name    => "${::monit::params::fragment_dir}/${fs_name}-filesystem.monit",
         content => template('monit/filesystem.monit.erb'),
-        owner   => root,
-        group   => "${::monit::params::admingroup}",
-        mode    => 600,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0600',
         require => File['monit-conf.d'],
         notify  => Class['monit::service'],
     }

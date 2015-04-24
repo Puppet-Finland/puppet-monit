@@ -17,12 +17,12 @@ define monit::packetfilter::allow_ip
     }
 
     firewall { "015 ipv4 accept monit httpd port from ${title}":
-        ensure => $ensure_firewall,
+        ensure   => $ensure_firewall,
         provider => 'iptables',
-        chain => 'INPUT',
-        proto => 'tcp',
-        port => "${bind_port}",
-        source => "${title}",
-        action => 'accept',
+        chain    => 'INPUT',
+        proto    => 'tcp',
+        port     => $bind_port,
+        source   => $title,
+        action   => 'accept',
     }
 }

@@ -4,13 +4,15 @@
 set daemon  180
 set logfile syslog facility log_daemon                       
 set mailserver localhost
-<%= mmonit_line %>
+<% if @mmonit_line %><%= mmonit_line %><% end -%>
+
 
 # We need monit's httpd for monitoring status of services, enabling them after 
 # unmonitoring, etc. A browser or the "monit" application can be used for the 
 # job.
 <%= httpd_line %>
-  <%= httpd_credentials_line %>
+  <% if @httpd_credentials_line %><%= httpd_credentials_line %><% end -%>
+
 <% all_addresses_ipv4.each do |address| -%>
   allow <%= address %>
 <% end -%>
@@ -24,11 +26,12 @@ set eventqueue
 # This is unnecessary piece of code if $fqdn is defined in the node definition
 # (when it'd otherwise be missing) but very useful as an example:
 # 
-<% if has_variable?("fqdn") then %>
+<% if @fqdn %>
 set mail-format { from: monit@<%= fqdn %> }
 <% else %>
 set mail-format { from: monit@<%= hostname %> }
-<% end %>
+<% end -%>
+
 
 # We don't want to receive monit instance change events, which are sent if monit
 # restarts.
@@ -38,4 +41,4 @@ set alert <%= servermonitor %> but not on { instance } with reminder on 480 cycl
 # (Puppet) syntax if we isolate the variables into a separate subclass (e.g. 
 # monit::params) and just include that subclass in the class that loads the 
 # template.
-include <%= scope.lookupvar('monit::params::fragment_dir') %>/*.monit
+include <%= scope['monit::params::fragment_dir'] %>/*.monit
