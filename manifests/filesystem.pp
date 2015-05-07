@@ -19,7 +19,7 @@
 #   $space_usage threshold is reached. The specified command is appended to a 
 #   script because monit's exec implementation can only handle paths, not 
 #   command-lines with parameters. If you need to specify several commands 
-#   separate them with a linefeed or a ";". You may also want to provide the 
+#   separate them with ";", "&&" or similar. You may also want to provide the 
 #   absolute path to every command to ensure that the shell finds them.
 # [*email*]
 #   Email where monit notifications/alerts are sent. Defaults to global variable 
@@ -46,8 +46,14 @@ define monit::filesystem
 {
     include ::monit::params
 
+    # Monit's configuration file parser chokes fairly easy, so we create a 
+    # separate script based on $exec_cmd and run it from monit. All the commands 
+    # are placed inside parentheses so that mail sends the output of all 
+    # commands, not just the last one. Note that the "From:" header is not 
+    # customized with the "-r" switch as FreeBSD's mail does not support it.
+    #
     $exec_script_path = "${::monit::params::fragment_dir}/${fs_name}-filesystem.sh"
-    $exec_script_content = "#!/bin/sh\n${exec_cmd}\n"
+    $exec_script_content = "#!/bin/sh\n(${exec_cmd})|mail -s 'monit exec -- ${exec_cmd}' ${email}\n"
 
     if $exec_cmd {
         $exec_script_ensure = 'present'
