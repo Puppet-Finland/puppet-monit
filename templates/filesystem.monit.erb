@@ -2,4 +2,4 @@
 
 check device <%= fs_name %>-filesystem with path <%= path %>
     alert <%= servermonitor %> with reminder on 480 cycles
-    if space usage > <%= space_usage %> then alert
+    if space usage > <%= space_usage %> then <%= action_line %>
