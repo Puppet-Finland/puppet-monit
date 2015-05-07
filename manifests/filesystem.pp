@@ -7,7 +7,8 @@
 #
 # [*fs_name*]
 #   Monit's identifier for the filesystem. Must be unique and in a format that 
-#   does not cause the monit configuration parser to choke. No default value.
+#   does not cause the monit configuration parser to choke. Defaults to resource 
+#   $title.
 # [*path*]
 #   Filesystem path. For example '/boot'. No default value.
 # [*space_usage*]
@@ -19,7 +20,7 @@
 #
 define monit::filesystem
 (
-    $fs_name,
+    $fs_name = $title,
     $path,
     $space_usage = '90%',
     $email = $::servermonitor
