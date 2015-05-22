@@ -10,7 +10,10 @@ class monit::params {
     case $::osfamily {
         'RedHat': {
             $package_name = 'monit'
-            $monitrc_name = '/etc/monit.conf'
+            $monitrc_name = $::operatingsystemmajrelease ? {
+                6 => '/etc/monit.conf',
+                7 => '/etc/monitrc',
+            }
             $fragment_dir = '/etc/monit.d'
         }
         'Debian': {
