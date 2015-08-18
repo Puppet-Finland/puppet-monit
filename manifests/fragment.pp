@@ -21,8 +21,13 @@ define monit::fragment
 {
     include ::monit::params
 
+    $ensure_file = $ensure ? {
+        /(present|running)/ => 'present',
+        'absent'            => 'absent',
+    }
+
     file { "${modulename}-${basename}.monit":
-        ensure  => $ensure,
+        ensure  => $ensure_file,
         name    => "${::monit::params::fragment_dir}/${basename}.monit",
         content => template("${modulename}/${basename}.monit.erb"),
         owner   => $::os::params::adminuser,
