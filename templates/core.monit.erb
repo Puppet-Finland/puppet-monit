@@ -13,12 +13,12 @@
 # test allows to check general system resources such as CPU usage (percent of 
 # time spent in user, system and wait), total memory usage or load average.
 
-check system <%= hostname %>
-    if loadavg (1min) > <%= loadavg_1min %> then alert
-    if loadavg (5min) > <%= loadavg_5min %> then alert
-    if memory usage > <%= memory_usage %> then alert
-    if cpu usage (system) > <%= cpu_usage_system %> then alert
-    if cpu usage (user) > <%= cpu_usage_user %> then alert
+check system <%= @hostname %>
+    if loadavg (1min) > <%= @loadavg_1min %> then alert
+    if loadavg (5min) > <%= @loadavg_5min %> then alert
+    if memory usage > <%= @memory_usage %> then alert
+    if cpu usage (system) > <%= @cpu_usage_system %> then alert
+    if cpu usage (user) > <%= @cpu_usage_user %> then alert
 
 # CHECK FILESYSTEM <unique name> PATH <path>
 #
@@ -26,5 +26,5 @@ check system <%= hostname %>
 # a directory which is part of a filesystem.
 
 check device rootfs with path /
-    alert <%= servermonitor %> with reminder on 480 cycles
-    if space usage > <%= space_usage %> then alert
+    alert <%= @servermonitor %> with reminder on 480 cycles
+    if space usage > <%= @space_usage %> then alert
