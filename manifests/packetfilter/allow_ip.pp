@@ -21,7 +21,7 @@ define monit::packetfilter::allow_ip
         provider => 'iptables',
         chain    => 'INPUT',
         proto    => 'tcp',
-        port     => $bind_port,
+        dport    => $bind_port,
         source   => $title,
         action   => 'accept',
     }
