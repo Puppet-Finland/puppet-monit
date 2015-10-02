@@ -107,6 +107,8 @@ class monit
 
 if $manage == 'yes' {
 
+    include ::monit::prequisites
+
     class { '::monit::install':
         ensure => $ensure,
     }
