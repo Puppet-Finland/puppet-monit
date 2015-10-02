@@ -11,9 +11,9 @@ class monit::params {
         'RedHat': {
             $package_name = 'monit'
             $monitrc_name = $::operatingsystemmajrelease ? {
-                6  => '/etc/monit.conf',
-                7  => '/etc/monitrc',
-                21 => '/etc/monitrc',
+                '6'  => '/etc/monit.conf',
+                '7'  => '/etc/monitrc',
+                '21' => '/etc/monitrc',
             }
             $fragment_dir = '/etc/monit.d'
         }
