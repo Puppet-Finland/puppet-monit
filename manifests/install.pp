@@ -18,6 +18,6 @@ class monit::install
     package { 'monit':
         ensure  => $ensure_package,
         name    => 'monit',
-        require => [ Class['epel'], Class['postfix'] ],
+        require => [ Class['monit::prequisites'], Class['postfix'] ],
     }
 }
