@@ -46,7 +46,12 @@
 # [*cpu_usage_system*]
 #   Notify if kernel-space CPU usage exceeds this percentage. Defaults to '95%'.
 # [*cpu_usage_user*]
-#   Notify if user-space CPU usage exceeds this percentage. Defaults to '95%'.
+#   Notify if user-space CPU usage exceeds this percentage. Defaults to '95%'. 
+#   This check can be disabled by giving this parameter a value false (boolean). 
+#   This is occasionally useful if some user-space application (e.g. 
+#   puppetserver) keeps the CPU occupied for long periods without causing any 
+#   issues. The loadaverage checks will ensure that runaway processes and DoS 
+#   attacks are still detected properly.
 # [*space_usage*]
 #   Notify if disk space usage (on root filesystem) exceeds this percentage. 
 #   Defaults to '90%'.

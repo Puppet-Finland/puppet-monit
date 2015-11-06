@@ -18,7 +18,7 @@ check system <%= @hostname %>
     if loadavg (5min) > <%= @loadavg_5min %> then alert
     if memory usage > <%= @memory_usage %> then alert
     if cpu usage (system) > <%= @cpu_usage_system %> then alert
-    if cpu usage (user) > <%= @cpu_usage_user %> then alert
+    <% if @cpu_usage_user %><%= @cpu_usage_user_line %><% end %>
 
 # CHECK FILESYSTEM <unique name> PATH <path>
 #

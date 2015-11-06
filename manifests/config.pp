@@ -67,6 +67,10 @@ class monit::config
         require => Class['monit::install'],
     }
 
+    # This line will _not_ be added to monit configuration if $cpu_usage_user 
+    # parameter is set to false.
+    $cpu_usage_user_line = "if cpu usage (user) > ${cpu_usage_user} then alert"
+
     file { 'monit-monitrc':
         ensure  => $ensure_file,
         name    => $::monit::params::monitrc_name,
