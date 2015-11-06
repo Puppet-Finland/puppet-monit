@@ -15,9 +15,15 @@ class monit::install
         'absent' => absent,
     }
 
+    $requires = $::osfamily ? {
+        'RedHat' => [ Class['epel'], Class['postfix'] ],
+        'Debian' => Class['postfix'],
+        default  => Class['postfix'],
+    }
+
     package { 'monit':
         ensure  => $ensure_package,
         name    => 'monit',
-        require => [ Class['monit::prequisites'], Class['postfix'] ],
+        require => $requires,
     }
 }
