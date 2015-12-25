@@ -69,6 +69,8 @@
 #   don't use M/Monit.
 # [*filesystems*]
 #   A hash of monit::filesystem defined resources to realize.
+# [*directories*]
+#   A hash of monit::directory defined resources to realize.
 #
 # == Examples
 #
@@ -106,7 +108,8 @@ class monit
     $mmonit_password = undef,
     $mmonit_host = undef,
     $mmonit_port = 8080,
-    $filesystems = {}
+    $filesystems = {},
+    $directories = {}
 )
 {
 
@@ -148,6 +151,7 @@ if $manage == 'yes' {
 
     # Additional filesystem monitoring
     create_resources('monit::filesystem', $filesystems)
+    create_resources('monit::directory', $directories)
 
     class { '::monit::service':
         ensure => $ensure,

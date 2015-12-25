@@ -1,0 +1,19 @@
+#!/bin/sh
+PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin
+THRESHOLD=<%= @threshold %>
+DIRECTORY=<%= @path %>
+
+SIZE=`du -ms $DIRECTORY|awk '{ print $1 }'`
+
+if [ $SIZE -gt $THRESHOLD ]; then
+    echo >&2
+    echo "WARNING: directory ${DIRECTORY} is ${SIZE}MB in size, which exceeds the threshold of ${THRESHOLD}MB." >&2
+<% if @exec_cmd -%>
+    echo "Taking action to resolve the situation." >&2
+    <%= @exec_cmd %> >&2
+<% end -%>
+    exit 1
+else
+    exit 0
+fi
+
