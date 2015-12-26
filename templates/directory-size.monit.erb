@@ -2,4 +2,4 @@
 #
 check program <%= @dirname %>-directory-size-test with path <%= scope.lookupvar('monit::params::fragment_dir') %>/<%= @dirname %>-directory-size-test.sh
    alert <%= @email %> with reminder on 480 cycles
-   if status != 0 timeout 60 seconds for 1 cycles then alert
+   if status != 0 for 5 cycles then alert
