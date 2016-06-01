@@ -1,0 +1,5 @@
+### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
+#
+check program <%= @title %>-writecheck with path <%= scope.lookupvar('monit::params::fragment_dir') %>/<%= @title %>-writecheck.sh
+   alert <%= @email %> with reminder on 480 cycles
+   if status != 0 for 5 cycles then alert
