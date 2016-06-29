@@ -14,6 +14,8 @@
 # [*space_usage*]
 #   Notify if disk space usage on the filesystem exceeds this percentage. 
 #   Defaults to '90%'.
+# [*inode_usage*]
+#   As above, but for inodes. Defaults to '90%'.
 # [*exec_cmd*]
 #   Execute a command to - for example - clean up diskspace when the 
 #   $space_usage threshold is reached. The specified command is appended to a 
@@ -40,6 +42,7 @@ define monit::filesystem
     $path,
     $fs_name = $title,
     $space_usage = '90%',
+    $inode_usage = '90%',
     $exec_cmd = undef,
     $email = $::servermonitor
 )

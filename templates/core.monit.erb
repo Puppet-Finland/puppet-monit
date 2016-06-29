@@ -28,3 +28,4 @@ check system <%= @hostname %>
 check device rootfs with path /
     alert <%= @servermonitor %> with reminder on 480 cycles
     if space usage > <%= @space_usage %> then alert
+    if inode usage > <%= @inode_usage %> then alert

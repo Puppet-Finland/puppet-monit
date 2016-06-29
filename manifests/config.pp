@@ -17,6 +17,7 @@ class monit::config
     $cpu_usage_system,
     $cpu_usage_user,
     $space_usage,
+    $inode_usage,
     $email,
     $mmonit_user,
     $mmonit_password,

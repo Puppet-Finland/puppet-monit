@@ -55,6 +55,8 @@
 # [*space_usage*]
 #   Notify if disk space usage (on root filesystem) exceeds this percentage. 
 #   Defaults to '90%'.
+# [*inode_usage*]
+#   As above, but for inodes. Defaults to '90%'.
 # [*email*]
 #   Email where monit notifications/alerts are sent. Defaults to variable 
 #   $::servermonitor defined in the node definition/site.pp.
@@ -105,6 +107,7 @@ class monit
     $cpu_usage_system = '95%',
     $cpu_usage_user = '95%',
     $space_usage = '90%',
+    $inode_usage = '90%',
     $email = $::servermonitor,
     $mmonit_user = undef,
     $mmonit_password = undef,
@@ -145,6 +148,7 @@ if $manage == 'yes' {
         cpu_usage_system   => $cpu_usage_system,
         cpu_usage_user     => $cpu_usage_user,
         space_usage        => $space_usage,
+        inode_usage        => $inode_usage,
         email              => $email,
         mmonit_user        => $mmonit_user,
         mmonit_password    => $mmonit_password,
