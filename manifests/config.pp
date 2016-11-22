@@ -11,6 +11,7 @@ class monit::config
     $username,
     $password,
     $all_addresses_ipv4,
+    $min_cycles,
     $loadavg_1min,
     $loadavg_5min,
     $memory_usage,
@@ -70,7 +71,7 @@ class monit::config
 
     # This line will _not_ be added to monit configuration if $cpu_usage_user 
     # parameter is set to false.
-    $cpu_usage_user_line = "if cpu usage (user) > ${cpu_usage_user} then alert"
+    $cpu_usage_user_line = "if cpu usage (user) > ${cpu_usage_user} for ${min_cycles} cycles then alert"
 
     file { 'monit-monitrc':
         ensure  => $ensure_file,

@@ -37,6 +37,9 @@
 #   webserver configuration and packet filtering rules (if in use). The default 
 #   value is ['127.0.0.1']. Note that $mmonit_host (if defined) is automatically 
 #   added to this array.
+# [*min_cycles*]
+#   Minimum number of cycles before monit alerts about high load averages, 
+#   memory usage, cpu usage or disk usage. Defaults to 5.
 # [*loadavg_1min*]
 #   Notify if one minute load average rises below this threshold. Defaults to 20.
 # [*loadavg_5min*]
@@ -101,6 +104,7 @@ class monit
     $username = undef,
     $password = undef,
     $allow_addresses_ipv4 = ['127.0.0.1'],
+    $min_cycles = 5,
     $loadavg_1min = '20',
     $loadavg_5min = '10',
     $memory_usage = '95%',
@@ -142,6 +146,7 @@ if $manage == 'yes' {
         username           => $username,
         password           => $password,
         all_addresses_ipv4 => $all_addresses_ipv4,
+        min_cycles         => $min_cycles,
         loadavg_1min       => $loadavg_1min,
         loadavg_5min       => $loadavg_5min,
         memory_usage       => $memory_usage,
