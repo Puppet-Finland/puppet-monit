@@ -16,9 +16,8 @@ class monit::install
     }
 
     $requires = $::osfamily ? {
-        'RedHat' => [ Class['epel'], Class['postfix'] ],
-        'Debian' => Class['postfix'],
-        default  => Class['postfix'],
+        'RedHat' => Class['epel'],
+        default  => undef,
     }
 
     package { 'monit':
