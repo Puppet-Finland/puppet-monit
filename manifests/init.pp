@@ -12,8 +12,8 @@
 # == Parameters
 #
 # [*manage*]
-#   Whether to manage monit with Puppet or not. Valid values are 'yes' (default) 
-#   and 'no'.
+#   Whether to manage monit with Puppet or not. Valid values are true (default) 
+#   and false.
 # [*ensure*]
 #   Status of monit and it's configurations. Valid values are 'present' 
 #   (default), 'absent' and 'running'. The value 'running' does the same as 
@@ -97,7 +97,7 @@
 #
 class monit
 (
-    $manage = 'yes',
+    Boolean $manage = true,
     $ensure = 'present',
     $bind_address = 'localhost',
     $bind_port = 2812,
@@ -123,7 +123,7 @@ class monit
 )
 {
 
-if $manage == 'yes' {
+if $manage {
 
     include ::monit::prequisites
 
