@@ -166,6 +166,9 @@ if $manage {
     create_resources('monit::directory', $directories)
     create_resources('monit::writecheck', $writechecks)
 
+    # Collect configuration fragments from other modules
+    Monit::Fragment <| tag == 'default' |>
+
     class { '::monit::service':
         ensure => $ensure,
     }
