@@ -16,7 +16,7 @@ define monit::packetfilter::allow_ip
         'absent' => absent,
     }
 
-    firewall { "015 ipv4 accept monit httpd port from ${title}":
+    @firewall { "015 ipv4 accept monit httpd port from ${title}":
         ensure   => $ensure_firewall,
         provider => 'iptables',
         chain    => 'INPUT',
@@ -24,5 +24,6 @@ define monit::packetfilter::allow_ip
         dport    => $bind_port,
         source   => $title,
         action   => 'accept',
+        tag      => 'default',
     }
 }

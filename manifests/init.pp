@@ -14,6 +14,8 @@
 # [*manage*]
 #   Whether to manage monit with Puppet or not. Valid values are true (default) 
 #   and false.
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false.
 # [*ensure*]
 #   Status of monit and it's configurations. Valid values are 'present' 
 #   (default), 'absent' and 'running'. The value 'running' does the same as 
@@ -98,6 +100,7 @@
 class monit
 (
     Boolean $manage = true,
+    Boolean $manage_packetfilter = true,
     $ensure = 'present',
     $bind_address = 'localhost',
     $bind_port = 2812,
@@ -173,7 +176,7 @@ if $manage {
         ensure => $ensure,
     }
 
-    if tagged('packetfilter') {
+    if $manage_packetfilter {
         class { '::monit::packetfilter':
             ensure             => $ensure,
             all_addresses_ipv4 => $all_addresses_ipv4,
