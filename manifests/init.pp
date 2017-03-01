@@ -172,6 +172,9 @@ if $manage {
     # Collect configuration fragments from other modules
     Monit::Fragment <| tag == 'default' |>
 
+    # Collect monit scripts from other modules
+    File <| tag == 'monit' |>
+
     class { '::monit::service':
         ensure => $ensure,
     }
