@@ -35,7 +35,7 @@ set mail-format { from: monit@<%= @hostname %> }
 
 # We don't want to receive monit instance change events, which are sent if monit
 # restarts.
-set alert <%= @servermonitor %> but not on { instance } with reminder on 480 cycles
+set alert <%= @email %> but not on { instance } with reminder on 480 cycles
 
 # Include monit rule fragments installed by services. We need this rather ugly 
 # (Puppet) syntax if we isolate the variables into a separate subclass (e.g. 
