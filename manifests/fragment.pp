@@ -14,9 +14,9 @@
 #
 define monit::fragment
 (
-    $modulename,
-    $ensure='present',
-    $basename=$modulename
+    String                             $modulename,
+    Enum['present','absent','running'] $ensure='present',
+    String                             $basename=$modulename
 )
 {
     include ::monit::params
