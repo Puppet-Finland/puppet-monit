@@ -16,11 +16,11 @@ See [metadata.json](metadata.json).
 
 This module has been tested on
 
-* Debian 6
-* Debian 7
+* Debian 6-9
 * Ubuntu 12.04
 * Ubuntu 14.04
-* CentOS 6
-* FreeBSD 10
+* Ubuntu 16.04
+* CentOS 6-7
+* FreeBSD 10-11
 
 For details see [params.pp](manifests/params.pp).
