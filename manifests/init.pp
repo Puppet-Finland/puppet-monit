@@ -115,7 +115,7 @@ class monit
     $cpu_usage_user = '95%',
     $space_usage = '90%',
     $inode_usage = '90%',
-    $email = $::servermonitor,
+    String $email = $::servermonitor,
     $mmonit_user = undef,
     $mmonit_password = undef,
     $mmonit_host = undef,
