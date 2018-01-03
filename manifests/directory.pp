@@ -39,12 +39,12 @@
 #
 define monit::directory
 (
-    $path,
-    $threshold,
-    $ensure = 'present',
-    $dirname = $title,
-    $exec_cmd = undef,
-    $email = $::servermonitor
+    String                   $path,
+    Integer                  $threshold,
+    Enum['present','absent'] $ensure = 'present',
+    String                   $dirname = $title,
+    Optional[String]         $exec_cmd = undef,
+    String                   $email = $::servermonitor
 )
 {
     include ::monit::params

@@ -39,12 +39,12 @@
 #
 define monit::filesystem
 (
-    $path,
-    $fs_name = $title,
-    $space_usage = '90%',
-    $inode_usage = '90%',
-    $exec_cmd = undef,
-    $email = $::servermonitor
+    String           $path,
+    String           $fs_name = $title,
+    String           $space_usage = '90%',
+    String           $inode_usage = '90%',
+    Optional[String] $exec_cmd = undef,
+    String           $email = $::servermonitor
 )
 {
     include ::monit::params
