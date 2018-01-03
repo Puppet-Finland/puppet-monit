@@ -15,16 +15,19 @@ class monit::params {
                 /(7|21|23|24|25)/  => '/etc/monitrc',
             }
             $fragment_dir = '/etc/monit.d'
+            $boot_cleanup_cmd = 'yum -y autoremove'
         }
         'Debian': {
             $package_name = 'monit'
             $monitrc_name = '/etc/monit/monitrc'
             $fragment_dir = '/etc/monit/conf.d'
+            $boot_cleanup_cmd = 'apt-get -y autoremove'
         }
         'FreeBSD': {
             $package_name = 'sysutils/monit'
             $monitrc_name = '/usr/local/etc/monitrc'
             $fragment_dir = '/usr/local/etc/monit.d'
+            $boot_cleanup_cmd = undef
         }
         default: {
             fail("Unsupported operating system ${::osfamily}")
