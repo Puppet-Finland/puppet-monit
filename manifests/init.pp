@@ -128,6 +128,9 @@ class monit
 
 if $manage {
 
+    # Remove obsolete configurations
+    include ::monit::absent
+
     include ::monit::prequisites
 
     class { '::monit::install':

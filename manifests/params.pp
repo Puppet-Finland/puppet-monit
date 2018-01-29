@@ -20,7 +20,19 @@ class monit::params {
         'Debian': {
             $package_name = 'monit'
             $monitrc_name = '/etc/monit/monitrc'
-            $fragment_dir = '/etc/monit/conf.d'
+
+            # Set fragment directory based on distro. Monit package on Debian 
+            # Jessie is special in that it creates a /etc/monit/monitrc.d 
+            # directory which is populated with a bunch of monit control files.
+            # It is akin to the conf-available directories on Ubuntu Xenial
+            # and Debian Stretch. In any case we can't use because it would
+            # pull with it several monit files we are not interested in and
+            # which overlap with Puppet-managed resources
+            $fragment_dir = $facts['os']['distro']['codename'] ? {
+                /(precise|trusty|wheezy|jessie)/ => '/etc/monit/conf.d',
+                /(stretch|xenial)/ =>  '/etc/monit/conf-enabled',
+            }
+
             $boot_cleanup_cmd = 'apt-get -y autoremove'
         }
         'FreeBSD': {
