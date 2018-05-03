@@ -2,14 +2,61 @@
   "name": "puppetfinland-monit",
   "version": "1.1.0",
   "author": "Puppet-Finland team",
-  "license": "BSD license",
   "summary": "Setup monit",
+  "license": "BSD-2-Clause",
   "source": "https://github.com/Puppet-Finland/monit.git",
   "project_page": "https://github.com/Puppet-Finland/monit",
   "dependencies": [
-    { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
-    { "name": "puppetfinland/os", "version_requirement": ">= 0.5.6" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.0.0" },
-    { "name": "stahnma/epel", "version_requirement": ">= 1.0.2" }
-  ]
+    {
+      "name": "puppetfinland/packetfilter",
+      "version_requirement": ">= 0.5.0"
+    },
+    {
+      "name": "puppetfinland/os",
+      "version_requirement": ">= 0.5.6"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.0.0"
+    },
+    {
+      "name": "stahnma/epel",
+      "version_requirement": ">= 1.0.2"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "windows",
+      "operatingsystemrelease": [
+        "2012 R2"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 6.0.0"
+    }
+  ],
+  "pdk-version": "1.4.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.4.1-0-g52adbbb"
 }
