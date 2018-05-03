@@ -4,8 +4,8 @@
   "author": "Puppet-Finland team",
   "summary": "Setup monit",
   "license": "BSD-2-Clause",
-  "source": "https://github.com/Puppet-Finland/monit.git",
-  "project_page": "https://github.com/Puppet-Finland/monit",
+  "source": "https://github.com/Puppet-Finland/puppet-monit.git",
+  "project_page": "https://github.com/Puppet-Finland/puppet-monit",
   "dependencies": [
     {
       "name": "puppetfinland/packetfilter",
