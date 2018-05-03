@@ -1,6 +1,6 @@
 {
   "name": "puppetfinland-monit",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Puppet-Finland team",
   "summary": "Setup monit",
   "license": "BSD-2-Clause",
