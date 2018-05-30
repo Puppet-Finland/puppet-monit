@@ -11,12 +11,16 @@
 #   Name of the module containing the monit template
 # [*basename*]
 #   Basename of the monit template file. Defaults to $modulename.
+# [*identifier*]
+#   Identifier for the service. Use this if you need to reuse the same monit
+#   template from the same module.
 #
 define monit::fragment
 (
     String                             $modulename,
     Enum['present','absent','running'] $ensure='present',
-    String                             $basename=$modulename
+    String                             $basename=$modulename,
+    Optional[String]                   $identifier = undef
 )
 {
     include ::monit::params
@@ -26,9 +30,14 @@ define monit::fragment
         'absent'            => 'absent',
     }
 
-    file { "${modulename}-${basename}.monit":
+    $filename = $identifier ? {
+        undef   => $basename,
+        default => "${basename}-${identifier}"
+    }
+
+    file { "${modulename}-${filename}.monit":
         ensure  => $ensure_file,
-        name    => "${::monit::params::fragment_dir}/${basename}.monit",
+        name    => "${::monit::params::fragment_dir}/${filename}.monit",
         content => template("${modulename}/${basename}.monit.erb"),
         owner   => $::os::params::adminuser,
         group   => $::os::params::admingroup,
