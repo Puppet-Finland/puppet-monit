@@ -53,3 +53,35 @@ main ::monit class. The postfix module uses this feature:
 
 Also, if a File resource is tagged with 'monit' it will be realized as well;
 the use-case for this is adding test scripts for monit from other modules.
+
+It is also possible to reuse a single template from several places, passing 
+variables to it as a hash. For example:
+
+    class myclass::daemon1 {
+    
+      $vars = { 'service_name'  => $::myclass::params::daemon1_service_name,
+                'pidfile'       => $::myclass::params::daemon1_pidfile,
+                'service_start' => $::myclass::params::daemon1_service_start,
+                'service_stop'  => $::myclass::params::daemon1_service_stop, }
+
+      ::monit::fragment { 'daemon1.monit':
+        ensure     => 'present',
+        basename   => 'myservice',
+        modulename => 'myclass',
+        identifier => 'daemon1',
+        vars       => $vars,
+        epp        => true,
+      }
+
+In this case you'd have an EPP template in myclass/templates/myservice.monit.epp 
+that uses the parameters along these lines:
+
+    ### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
+    
+    check process <%= $service_name %> with pidfile <%= $pidfile %>
+        start program = "<%= $service_start %>"
+        stop  program = "<%= $service_stop %>"
+        alert <%= $::monit::email %> with reminder on 480 cycles
+
+You could then pass the ::monit::fragment a different set of variables to make 
+it configure some other service.
