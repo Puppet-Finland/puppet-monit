@@ -5,8 +5,8 @@
 #
 class monit::absent inherits monit::params {
 
-    if $facts['os']['family'] == 'Debian' {
-        case $facts['os']['distro']['codename'] {
+    if $::osfamily == 'Debian' {
+        case $::lsbdistcodename {
             default: {
                 # Do nothing
             }
