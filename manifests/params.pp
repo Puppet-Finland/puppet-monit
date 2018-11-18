@@ -28,7 +28,7 @@ class monit::params {
             # and Debian Stretch. In any case we can't use because it would
             # pull with it several monit files we are not interested in and
             # which overlap with Puppet-managed resources
-            $fragment_dir = $facts['os']['distro']['codename'] ? {
+            $fragment_dir = $::lsbdistcodename ? {
                 /(precise|trusty|wheezy|jessie)/ => '/etc/monit/conf.d',
                 /(stretch|xenial|bionic)/        => '/etc/monit/conf-enabled',
             }
