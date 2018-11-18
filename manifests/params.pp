@@ -30,7 +30,7 @@ class monit::params {
             # which overlap with Puppet-managed resources
             $fragment_dir = $::lsbdistcodename ? {
                 /(precise|trusty|wheezy|jessie)/ => '/etc/monit/conf.d',
-                /(stretch|xenial|bionic)/        => '/etc/monit/conf-enabled',
+                /(stretch|buster|xenial|bionic)/ => '/etc/monit/conf-enabled',
             }
 
             $boot_cleanup_cmd = 'apt-get -y autoremove'
