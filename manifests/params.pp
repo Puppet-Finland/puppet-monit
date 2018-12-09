@@ -12,7 +12,7 @@ class monit::params {
             $package_name = 'monit'
             $monitrc_name = $::operatingsystemmajrelease ? {
                 '6'          => '/etc/monit.conf',
-                /(7|21|23|24|25)/  => '/etc/monitrc',
+                /(7|21|23|24|25|29)/  => '/etc/monitrc',
             }
             $fragment_dir = '/etc/monit.d'
             $boot_cleanup_cmd = 'yum -y autoremove'
