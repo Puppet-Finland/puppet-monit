@@ -29,6 +29,9 @@
 #   the Internet. Default value for this parameter is 'localhost'.
 # [*bind_port*]
 #   The port monit's web server will bind to. Defaults to 2812.
+# [*fqdn_as_system_name*]
+#   Use the value of $::fqdn instead of $::hostname as MONIT_HOST. Useful if you
+#   have several servers with hostname of, say, www.
 # [*username*]
 #   Username for accessing the webserver. Can be omitted (default).
 # [*password*]
@@ -104,6 +107,7 @@ class monit
     $ensure = 'present',
     $bind_address = 'localhost',
     $bind_port = 2812,
+    $fqdn_as_system_name = false,
     $username = undef,
     $password = undef,
     $allow_addresses_ipv4 = ['127.0.0.1'],
@@ -146,25 +150,26 @@ if $manage {
     }
 
     class { '::monit::config':
-        ensure             => $ensure,
-        bind_address       => $bind_address,
-        bind_port          => $bind_port,
-        username           => $username,
-        password           => $password,
-        all_addresses_ipv4 => $all_addresses_ipv4,
-        min_cycles         => $min_cycles,
-        loadavg_1min       => $loadavg_1min,
-        loadavg_5min       => $loadavg_5min,
-        memory_usage       => $memory_usage,
-        cpu_usage_system   => $cpu_usage_system,
-        cpu_usage_user     => $cpu_usage_user,
-        space_usage        => $space_usage,
-        inode_usage        => $inode_usage,
-        email              => $email,
-        mmonit_user        => $mmonit_user,
-        mmonit_password    => $mmonit_password,
-        mmonit_host        => $mmonit_host,
-        mmonit_port        => $mmonit_port,
+        ensure              => $ensure,
+        bind_address        => $bind_address,
+        bind_port           => $bind_port,
+        fqdn_as_system_name => $fqdn_as_system_name,
+        username            => $username,
+        password            => $password,
+        all_addresses_ipv4  => $all_addresses_ipv4,
+        min_cycles          => $min_cycles,
+        loadavg_1min        => $loadavg_1min,
+        loadavg_5min        => $loadavg_5min,
+        memory_usage        => $memory_usage,
+        cpu_usage_system    => $cpu_usage_system,
+        cpu_usage_user      => $cpu_usage_user,
+        space_usage         => $space_usage,
+        inode_usage         => $inode_usage,
+        email               => $email,
+        mmonit_user         => $mmonit_user,
+        mmonit_password     => $mmonit_password,
+        mmonit_host         => $mmonit_host,
+        mmonit_port         => $mmonit_port,
     }
 
     # Additional filesystem monitoring

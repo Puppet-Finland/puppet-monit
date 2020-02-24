@@ -8,6 +8,7 @@ class monit::config
     $ensure,
     $bind_address,
     $bind_port,
+    Boolean $fqdn_as_system_name,
     $username,
     $password,
     $all_addresses_ipv4,
@@ -91,6 +92,11 @@ class monit::config
         group   => $::os::params::admingroup,
         mode    => '0755',
         require => Class['monit::install'],
+    }
+
+    $system_name = $fqdn_as_system_name ? {
+        true  => $::fqdn,
+        false => $::hostname,
     }
 
     file { 'monit-core.monit':

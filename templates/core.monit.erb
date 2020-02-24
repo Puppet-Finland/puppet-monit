@@ -13,7 +13,7 @@
 # test allows to check general system resources such as CPU usage (percent of 
 # time spent in user, system and wait), total memory usage or load average.
 
-check system <%= @hostname %>
+check system <%= @system_name %>
     if loadavg (1min) > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
     if loadavg (5min) > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
     if memory usage > <%= @memory_usage %> for <%= @min_cycles %> cycles then alert
