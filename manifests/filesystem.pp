@@ -13,9 +13,9 @@
 #   $title.
 # [*space_usage*]
 #   Notify if disk space usage on the filesystem exceeds this percentage. 
-#   Defaults to '90%'.
+#   Defaults to 90.
 # [*inode_usage*]
-#   As above, but for inodes. Defaults to '90%'.
+#   As above, but for inodes. Defaults to 90.
 # [*exec_cmd*]
 #   Execute a command to - for example - clean up diskspace when the 
 #   $space_usage threshold is reached. The specified command is appended to a 
@@ -34,15 +34,15 @@
 #   monit::filesystems:
 #       boot:
 #           path: '/boot'
-#           space_usage: '70%'
+#           space_usage: 70
 #           exec_cmd: 'apt-get -y autoremove'
 #
 define monit::filesystem
 (
     String           $path,
     String           $fs_name = $title,
-    String           $space_usage = '90%',
-    String           $inode_usage = '90%',
+    Integer[0,100]   $space_usage = 90,
+    Integer[0,100]   $inode_usage = 90,
     Optional[String] $exec_cmd = undef,
     String           $email = $::servermonitor
 )

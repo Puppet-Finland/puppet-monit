@@ -50,11 +50,11 @@
 # [*loadavg_5min*]
 #   Notify if five minute load average rises below this threshold. Defaults to 10.
 # [*memory_usage*]
-#   Notify if memory usage exceeds this percentage. Defaults to '95%'.
+#   Notify if memory usage exceeds this percentage. Defaults to 95.
 # [*cpu_usage_system*]
-#   Notify if kernel-space CPU usage exceeds this percentage. Defaults to '95%'.
+#   Notify if kernel-space CPU usage exceeds this percentage. Defaults to 95.
 # [*cpu_usage_user*]
-#   Notify if user-space CPU usage exceeds this percentage. Defaults to '95%'. 
+#   Notify if user-space CPU usage exceeds this percentage. Defaults to 95.
 #   This check can be disabled by giving this parameter a value false (boolean). 
 #   This is occasionally useful if some user-space application (e.g. 
 #   puppetserver) keeps the CPU occupied for long periods without causing any 
@@ -62,9 +62,9 @@
 #   attacks are still detected properly.
 # [*space_usage*]
 #   Notify if disk space usage (on root filesystem) exceeds this percentage. 
-#   Defaults to '90%'.
+#   Defaults to 90.
 # [*inode_usage*]
-#   As above, but for inodes. Defaults to '90%'.
+#   As above, but for inodes. Defaults to 90.
 # [*email*]
 #   Email where monit notifications/alerts are sent. Defaults to variable 
 #   $::servermonitor defined in the node definition/site.pp.
@@ -112,13 +112,13 @@ class monit
     $password = undef,
     $allow_addresses_ipv4 = ['127.0.0.1'],
     $min_cycles = 5,
-    $loadavg_1min = '20',
-    $loadavg_5min = '10',
-    $memory_usage = '95%',
-    $cpu_usage_system = '95%',
-    $cpu_usage_user = '95%',
-    $space_usage = '90%',
-    $inode_usage = '90%',
+    $loadavg_1min = 20,
+    $loadavg_5min = 10,
+    $memory_usage = 95,
+    $cpu_usage_system = 95,
+    $cpu_usage_user = 95,
+    $space_usage = 90,
+    $inode_usage = 90,
     String $email = $::servermonitor,
     $mmonit_user = undef,
     $mmonit_password = undef,

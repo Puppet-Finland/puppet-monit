@@ -2,5 +2,5 @@
 
 check device <%= @fs_name %>-filesystem with path <%= @path %>
     alert <%= @email %> with reminder on 480 cycles
-    if space usage > <%= @space_usage %> then <%= @action_line %>
-    if inode usage > <%= @inode_usage %> then <%= @action_line %>
+    if space usage > <%= @space_usage %>% then <%= @action_line %>
+    if inode usage > <%= @inode_usage %>% then <%= @action_line %>

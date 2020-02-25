@@ -5,26 +5,26 @@
 #
 class monit::config
 (
-    $ensure,
-    $bind_address,
-    $bind_port,
-    Boolean $fqdn_as_system_name,
-    $username,
-    $password,
-    $all_addresses_ipv4,
-    $min_cycles,
-    $loadavg_1min,
-    $loadavg_5min,
-    $memory_usage,
-    $cpu_usage_system,
-    $cpu_usage_user,
-    $space_usage,
-    $inode_usage,
-    $email,
-    $mmonit_user,
-    $mmonit_password,
-    $mmonit_host,
-    $mmonit_port
+    Enum['present','running','absent'] $ensure,
+    String                             $bind_address,
+    Integer[1,65535]                   $bind_port,
+    Boolean                            $fqdn_as_system_name,
+    Array[String]                      $all_addresses_ipv4,
+    Integer                            $min_cycles,
+    Integer                            $loadavg_1min,
+    Integer                            $loadavg_5min,
+    Integer[0,100]                     $memory_usage,
+    Integer[0,100]                     $cpu_usage_system,
+    Integer[0,100]                     $cpu_usage_user,
+    Integer[0,100]                     $space_usage,
+    Integer[0,100]                     $inode_usage,
+    String                             $email,
+    Optional[String]                   $username = undef,
+    Optional[String]                   $password = undef,
+    Optional[String]                   $mmonit_user = undef,
+    Optional[String]                   $mmonit_password = undef,
+    Optional[Stdlib::Host]             $mmonit_host = undef,
+    Optional[Integer[1,65535]]         $mmonit_port = undef
 
 ) inherits monit::params
 {
@@ -72,7 +72,7 @@ class monit::config
 
     # This line will _not_ be added to monit configuration if $cpu_usage_user 
     # parameter is set to false.
-    $cpu_usage_user_line = "if cpu usage (user) > ${cpu_usage_user} for ${min_cycles} cycles then alert"
+    $cpu_usage_user_line = "if cpu usage (user) > ${cpu_usage_user}% for ${min_cycles} cycles then alert"
 
     file { 'monit-monitrc':
         ensure  => $ensure_file,

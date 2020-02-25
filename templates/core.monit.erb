@@ -16,8 +16,8 @@
 check system <%= @system_name %>
     if loadavg (1min) > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
     if loadavg (5min) > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
-    if memory usage > <%= @memory_usage %> for <%= @min_cycles %> cycles then alert
-    if cpu usage (system) > <%= @cpu_usage_system %> for <%= @min_cycles %> cycles then alert
+    if memory usage > <%= @memory_usage %>% for <%= @min_cycles %> cycles then alert
+    if cpu usage (system) > <%= @cpu_usage_system %>% for <%= @min_cycles %> cycles then alert
     <% if @cpu_usage_user %><%= @cpu_usage_user_line %><% end %>
 
 # CHECK FILESYSTEM <unique name> PATH <path>
@@ -27,5 +27,5 @@ check system <%= @system_name %>
 
 check device rootfs with path /
     alert <%= @email %> with reminder on 480 cycles
-    if space usage > <%= @space_usage %> for <%= @min_cycles %> cycles then alert
-    if inode usage > <%= @inode_usage %> for <%= @min_cycles %> cycles then alert
+    if space usage > <%= @space_usage %>% for <%= @min_cycles %> cycles then alert
+    if inode usage > <%= @inode_usage %>% for <%= @min_cycles %> cycles then alert
