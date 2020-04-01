@@ -2,6 +2,9 @@ fixtures:
   symlinks:
     monit: "#{source_dir}"
   forge_modules:
+    apt:
+      repo: "puppetlabs/apt"
+      ref: "7.4.1"
     epel:
       repo: "stahnma/epel"
       ref: "1.3.1"

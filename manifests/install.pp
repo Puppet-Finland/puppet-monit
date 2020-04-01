@@ -15,9 +15,12 @@ class monit::install
         'absent' => absent,
     }
 
-    $requires = $::osfamily ? {
-        'RedHat' => Class['epel'],
-        default  => undef,
+    if $::osfamily == 'RedHat' {
+        $requires = Class['epel']
+    } elsif $::lsbdistcodename == 'buster' {
+        $requires = Class['apt::backports']
+    } else {
+        $requires = undef
     }
 
     package { 'monit':

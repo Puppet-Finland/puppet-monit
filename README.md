@@ -16,6 +16,12 @@ The simplest way to use this module:
 The email parameter can be omitted if global variable $::servermonitor is 
 defined.
 
+On Debian 10 this module includes the ::apt::backports class from
+puppetlabs-apt automatically to allow installing monit. You can override this
+behavior by setting manage_backports => false. In that case you need to ensure
+that you include a ::apt::backports class (not necessarily the Puppetlabs
+version) somewhere else or monit installation will fail.
+
 By default monit monitors CPU usage, load averages and  memory, plus disk space 
 and inode consumption on the root filesystem. The pre-configured thresholds can 
 be customized as needed.

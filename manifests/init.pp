@@ -14,6 +14,9 @@
 # [*manage*]
 #   Whether to manage monit with Puppet or not. Valid values are true (default) 
 #   and false.
+# [*manage_backports*]
+#   Whether to include ::apt::backports class automatically on Debian 10.
+#   Defaults to true.
 # [*manage_packetfilter*]
 #   Manage packet filtering rules. Valid values are true (default) and false.
 # [*ensure*]
@@ -103,6 +106,7 @@
 class monit
 (
     Boolean $manage = true,
+    Boolean $manage_backports = true,
     Boolean $manage_packetfilter = true,
     $ensure = 'present',
     $bind_address = 'localhost',
@@ -135,7 +139,9 @@ if $manage {
     # Remove obsolete configurations
     include ::monit::absent
 
-    include ::monit::prequisites
+    class { '::monit::prerequisites':
+        manage_backports => $manage_backports,
+    }
 
     class { '::monit::install':
         ensure => $ensure,
