@@ -29,8 +29,8 @@ class monit::params {
             # pull with it several monit files we are not interested in and
             # which overlap with Puppet-managed resources
             $fragment_dir = $::lsbdistcodename ? {
-                /(precise|trusty|wheezy|jessie)/ => '/etc/monit/conf.d',
-                /(stretch|buster|xenial|bionic)/ => '/etc/monit/conf-enabled',
+                /(precise|trusty|wheezy|jessie)/       => '/etc/monit/conf.d',
+                /(stretch|buster|xenial|bionic|focal)/ => '/etc/monit/conf-enabled',
             }
 
             $boot_cleanup_cmd = 'apt-get -y autoremove'
