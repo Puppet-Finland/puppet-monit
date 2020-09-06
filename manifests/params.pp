@@ -11,8 +11,8 @@ class monit::params {
         'RedHat': {
             $package_name = 'monit'
             $monitrc_name = $::operatingsystemmajrelease ? {
-                '6'          => '/etc/monit.conf',
-                /(7|21|23|24|25|29|30)/  => '/etc/monitrc',
+                '6'     => '/etc/monit.conf',
+                default => '/etc/monitrc',
             }
             $fragment_dir = '/etc/monit.d'
             $boot_cleanup_cmd = 'yum -y autoremove'
