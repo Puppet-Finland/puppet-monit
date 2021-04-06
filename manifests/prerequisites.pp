@@ -13,6 +13,7 @@ inherits monit::params {
         # Monit is not available in the standard repositories
         include ::epel
     } elsif $::lsbdistcodename == 'buster' and $manage_backports {
+        include ::apt
         include ::apt::backports
     }
 }
