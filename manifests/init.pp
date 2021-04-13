@@ -89,6 +89,7 @@
 # [*loadavg_per_core*]
 #   Monitor load averages *per core*. Default false.
 #   The load average is then the number of processes in the system run queue per CPU core, averaged over the specified time period
+#   NOTE: This requires at least monit version 5.26.0
 #
 # == Examples
 #
@@ -138,6 +139,10 @@ class monit
 )
 {
 
+if versioncmp($::monit_version, '5.26.0') < 0 and $loadavg_per_core {
+  fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
+}  
+  
 if $manage {
 
     # Remove obsolete configurations
