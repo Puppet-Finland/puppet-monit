@@ -15,8 +15,8 @@
 
 check system <%= @system_name %>
     <% if @loadavg_per_core -%>  
-    if loadavg (1min) per_core > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
-    if loadavg (5min) per_core > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
+    if loadavg (1min) per core > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
+    if loadavg (5min) per core > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
     <% else -%>
     if loadavg (1min) > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
     if loadavg (5min) > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
