@@ -141,8 +141,8 @@ class monit
 
 if versioncmp($::monit_version, '5.26.0') < 0 and $loadavg_per_core {
   fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
-}  
-  
+}
+
 if $manage {
 
     # Remove obsolete configurations
