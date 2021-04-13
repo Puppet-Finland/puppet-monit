@@ -19,12 +19,13 @@ class monit::config
     Integer[0,100]                     $space_usage,
     Integer[0,100]                     $inode_usage,
     String                             $email,
+    Boolean                            $loadavg_per_core,
     Optional[String]                   $username = undef,
     Optional[String]                   $password = undef,
     Optional[String]                   $mmonit_user = undef,
     Optional[String]                   $mmonit_password = undef,
     Optional[Stdlib::Host]             $mmonit_host = undef,
-    Optional[Integer[1,65535]]         $mmonit_port = undef
+    Optional[Integer[1,65535]]         $mmonit_port = undef,
 
 ) inherits monit::params
 {

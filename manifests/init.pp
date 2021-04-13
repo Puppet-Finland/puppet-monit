@@ -86,6 +86,10 @@
 #   A hash of monit::directory defined resources to realize.
 # [*writechecks*]
 #   A hash of monit::writecheck defined resources to realize.
+# [*loadavg_per_core*]
+#   Monitor load averages *per core*. Default false.
+#   The load average is then the number of processes in the system run queue per CPU core, averaged over the specified time period
+#   NOTE: This requires at least monit version 5.26.0
 #
 # == Examples
 #
@@ -130,9 +134,14 @@ class monit
     $mmonit_port = 8080,
     $filesystems = {},
     $directories = {},
-    $writechecks = {}
+    $writechecks = {},
+    Boolean $loadavg_per_core = false,
 )
 {
+
+if versioncmp($::monit_version, '5.26.0') < 0 and $loadavg_per_core {
+  fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
+}
 
 if $manage {
 
@@ -176,6 +185,7 @@ if $manage {
         mmonit_password     => $mmonit_password,
         mmonit_host         => $mmonit_host,
         mmonit_port         => $mmonit_port,
+        loadavg_per_core    => $loadavg_per_core,
     }
 
     # Additional filesystem monitoring
