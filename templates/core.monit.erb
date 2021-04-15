@@ -17,10 +17,10 @@ check system <%= @system_name %>
     <% if @loadavg_per_core -%>  
     if loadavg (1min) per core > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
     if loadavg (5min) per core > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
-    <% else -%>
+    <%- else -%>
     if loadavg (1min) > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
     if loadavg (5min) > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
-    <% end -%>
+    <%- end -%>
     if memory usage > <%= @memory_usage %>% for <%= @min_cycles %> cycles then alert
     if cpu usage (system) > <%= @cpu_usage_system %>% for <%= @min_cycles %> cycles then alert
     <% if @cpu_usage_user %><%= @cpu_usage_user_line %><% end %>

@@ -139,13 +139,22 @@ class monit
 )
 {
 
-# This could take two agent runs to apply
-if $::monit_version == '' and $loadavg_per_core {
+# when the custom fact is not yet available
+if ! $::monit_version {
   $_loadavg_per_core = false
-} elsif versioncmp($::monit_version, '5.26.0') < 0 and $loadavg_per_core {
-    fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
-} else {
-  $_loadavg_per_core = true
+}
+
+# when the custom fact is available
+if $::monit_version {
+  if $loadavg_per_core {
+    if versioncmp($::monit_version, '5.26.0') < 0 {
+      fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
+    } else {
+      $_loadavg_per_core = true
+    }
+  } else {
+    $_loadavg_per_core = false
+  }
 }
 
 if $manage {
