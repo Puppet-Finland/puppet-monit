@@ -139,8 +139,13 @@ class monit
 )
 {
 
-if versioncmp($::monit_version, '5.26.0') < 0 and $loadavg_per_core {
-  fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
+# This could take two agent runs to apply
+if $::monit_version == '' and $loadavg_per_core {
+  $_loadavg_per_core = false
+} elsif versioncmp($::monit_version, '5.26.0') < 0 and $loadavg_per_core {
+    fail("Monitoring load averages per core requires Monit version 5.26.0 or greater, found: \'${::monit_version}\'")
+} else {
+  $_loadavg_per_core = true
 }
 
 if $manage {
@@ -185,7 +190,7 @@ if $manage {
         mmonit_password     => $mmonit_password,
         mmonit_host         => $mmonit_host,
         mmonit_port         => $mmonit_port,
-        loadavg_per_core    => $loadavg_per_core,
+        loadavg_per_core    => $_loadavg_per_core,
     }
 
     # Additional filesystem monitoring
