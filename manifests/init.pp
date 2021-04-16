@@ -89,7 +89,7 @@
 # [*loadavg_per_core*]
 #   Monitor load averages *per core*. Default false.
 #   The load average is then the number of processes in the system run queue per CPU core, averaged over the specified time period
-#   NOTE: This requires at least monit version 5.26.0
+#   NOTE: This requires at least monit version 5.26.0. If this is turned to true, also tune the loadavgs.
 #
 # == Examples
 #
