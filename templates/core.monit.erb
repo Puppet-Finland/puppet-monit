@@ -14,7 +14,7 @@
 # time spent in user, system and wait), total memory usage or load average.
 
 check system <%= @system_name %>
-    <% if @loadavg_per_core -%>  
+    <%- if @loadavg_per_core -%>
     if loadavg (1min) per core > <%= @loadavg_1min %> for <%= @min_cycles %> cycles then alert
     if loadavg (5min) per core > <%= @loadavg_5min %> for <%= @min_cycles %> cycles then alert
     <%- else -%>
